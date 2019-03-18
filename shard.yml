@@ -1,0 +1,13 @@
+name: oynayalim
+version: 0.1.0
+
+authors:
+  - Oguzhan <unequaled86@gmail.com>
+
+targets:
+  oynayalim:
+    main: src/oynayalim.cr
+
+crystal: 0.27.0
+
+license: MIT
