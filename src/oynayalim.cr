@@ -28,7 +28,7 @@ class Comic
 end
 
 class MissingParameters
-	JSON.mapping(code: String, parameters: Array(Parameter))
+	JSON.mapping(code: String, parameters: Array(Parameter)?)
 end
 
 class Parameter
@@ -47,7 +47,7 @@ get "/d" do
 	hatalar = Set(Parameter).new
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "ss"}))
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "dd"}))
-	req = ComicResponse.from_json(%({"code": "hata_null", "parameters": []))
+	req = ComicResponse.from_json(%({"code": "hata_null"))
 	req.parameters = hatalar
 	req.to_json
 end
