@@ -3,7 +3,7 @@ require "json"
 
 get "/" do
 	uyeler = [{ad: "ss"}, {ad: "dd"}]
-	hashd = Hash(String, JSON::Any).new
+	hashd = Hash(String, JSON::Any)
 	hashd["cCc"] = "hata"
 	hashd["uyeler"] = uyeler
 	hashd.to_json
