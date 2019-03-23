@@ -46,7 +46,7 @@ end
 get "/d" do
 	hash = Hash(String, JSON::Any::Type).new()
 	hash["kod"] = "cCc"
-	hatalar = Set(Parameter).new
+	hatalar = Array(Parameter).new
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "ss"}))
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "dd"}))
 	#req = ComicResponse.from_json(%({"code": "hata_null"))
