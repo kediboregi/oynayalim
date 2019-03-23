@@ -44,10 +44,9 @@ get "/" do
 end
 
 alias JValue   = String | Int32 | Bool | Nil | Array(JValue) | Hash(String, JValue)
-alias KeyValue = {String, JValue}
 
 get "/d" do
-	hash = KeyValue.new()
+	hash = Hash(String, JValue).new()
 	hash["kod"] = "cCc"
 	#hash["hatalar"] = Array(Parameter).new
 	hash["hatalar"] << {"code" => "hata_null", "message" => "ss"}
