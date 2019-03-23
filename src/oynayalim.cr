@@ -28,7 +28,7 @@ class Comic
 end
 
 class MissingParameters
-	JSON.mapping(code: String, parameters: Array(Parameter)?)
+	JSON.mapping(code: String, parameters: Array(Parameter?))
 end
 
 class Parameter
