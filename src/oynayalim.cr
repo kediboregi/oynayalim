@@ -33,7 +33,7 @@ alias ComicRequest = ResponseWrapper(Comic) | MissingParameter
 alias CharacterRequest = ResponseWrapper(CharacterRequest) | MissingParameter
 
 get "/" do
-	req = ComicRequest.from_json(%({"status": "cCc", "data": {"offset": 5, "limit": 1, "total": 20, "count": 100, "results": [{"id": 1, "title": "sss"}, {"id": 2, "title":, "ddd"}]}))
+	req = ComicRequest.from_json(%({"status": "cCc", "data": {"offset": 5, "limit": 1, "total": 20, "count": 100, "results": [{"id": 1, "title": "sss"}, {"id": 2, "title": "ddd"}]}}))
 	#uyeler = [{"ad" => "ss"}, {"ad" => "dd"}]
 	#hashd = {} of String => JSON::Any::Type
 	#hashd["cCc"] = "hata"
