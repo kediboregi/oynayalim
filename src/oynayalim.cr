@@ -48,7 +48,7 @@ alias JValue   = String | Int32 | Bool | Nil | Array(JValue) | Hash(String, JVal
 get "/d" do
 	hash = Hash(String, JValue).new()
 	hash["kod"] = "cCc"
-	hash["hatalar"] = Set(JValue).new
+	hash["hatalar"] = Array(JValue).new()
 	hash["hatalar"] << {"code" => "hata_null", "message" => "ss"}
 	hash["hatalar"] << {"code" => "hata_null", "message" => "dd"}
 	#req = ComicResponse.from_json(%({"code": "hata_null"))
