@@ -44,12 +44,14 @@ get "/" do
 end
 
 get "/d" do
+	hash = Hash(String, JSON::Any::Type).new()
+	hash["kod"] = "cCc"
 	hatalar = Set(Parameter).new
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "ss"}))
 	hatalar << Parameter.from_json(%({"code": "hata_null", "message": "dd"}))
-	req = ComicResponse.from_json(%({"code": "hata_null"))
-	req.parameters = hatalar
-	req.to_json
+	#req = ComicResponse.from_json(%({"code": "hata_null"))
+	hash["hatalar"] = hatalar
+	hash.to_json
 end
 
 Kemal.run(ENV["PORT"].to_i32.not_nil!)
