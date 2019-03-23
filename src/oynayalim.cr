@@ -36,15 +36,15 @@ class Parameter
 end
 
 alias ComicResponse = ResponseWrapper(Comic) | MissingParameters
-alias CharacterResponse = ResponseWrapper(CharacterRequest) | MissingParameters
+alias CharacterResponse = ResponseWrapper(Character) | MissingParameters
 
 get "/" do
-	req = ComicRequest.from_json(%({"status": "cCc", "data": {"offset": 5, "limit": 1, "total": 20, "count": 100, "results": [{"id": 1, "title": "sss"}, {"id": 2, "title": "ddd"}]}}))
+	req = ComicResponse.from_json(%({"status": "cCc", "data": {"offset": 5, "limit": 1, "total": 20, "count": 100, "results": [{"id": 1, "title": "sss"}, {"id": 2, "title": "ddd"}]}}))
 	req.to_json
 end
 
 get "/d" do
-	req = ComicRequest.from_json(%({"code": "hata_null", "parameters": []}))
+	req = ComicResponse.from_json(%({"code": "hata_null", "parameters": []}))
 	req["parameters"][0] = %({"code": "hata_null", "message": "ddd"})
 	req.to_json
 end
