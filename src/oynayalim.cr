@@ -2,7 +2,7 @@ require "kemal"
 require "json"
 
 get "/" do
-	uyeler = [{ad: "ss"}, {ad: "dd"}]
+	uyeler = [{"ad" => "ss"}, {"ad" => "dd"}]
 	hashd = {} of String => JSON::Any::Type
 	hashd["cCc"] = "hata"
 	hashd["uyeler"] = uyeler
