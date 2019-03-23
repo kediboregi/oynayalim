@@ -33,11 +33,13 @@ alias ComicRequest = ResponseWrapper(Comic) | MissingParameter
 alias CharacterRequest = ResponseWrapper(CharacterRequest) | MissingParameter
 
 get "/" do
-	uyeler = [{"ad" => "ss"}, {"ad" => "dd"}]
-	hashd = {} of String => JSON::Any::Type
-	hashd["cCc"] = "hata"
-	hashd["uyeler"] = {"ad" => "ss"}
-	hashd.to_json
+	req = ComicRequest.parse(%({"id": 0, "title": "cCc"}))
+	#uyeler = [{"ad" => "ss"}, {"ad" => "dd"}]
+	#hashd = {} of String => JSON::Any::Type
+	#hashd["cCc"] = "hata"
+	#hashd["uyeler"] = []
+	#hashd.to_json
+	req.to_json
 end
 
 Kemal.run(ENV["PORT"].to_i32.not_nil!)
