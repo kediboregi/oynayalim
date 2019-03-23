@@ -34,11 +34,11 @@ alias CharacterRequest = ResponseWrapper(CharacterRequest) | MissingParameter
 
 get "/" do
 	req = ComicRequest.from_json(%({"status": "cCc", "data": {"offset": 5, "limit": 1, "total": 20, "count": 100, "results": [{"id": 1, "title": "sss"}, {"id": 2, "title": "ddd"}]}}))
-	#uyeler = [{"ad" => "ss"}, {"ad" => "dd"}]
-	#hashd = {} of String => JSON::Any::Type
-	#hashd["cCc"] = "hata"
-	#hashd["uyeler"] = []
-	#hashd.to_json
+	req.to_json
+end
+
+get "/d" do
+	req = ComicRequest.from_json(%({"code": "hata_null", "message": "ddd"}))
 	req.to_json
 end
 
