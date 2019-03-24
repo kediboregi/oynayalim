@@ -22,7 +22,7 @@ get "/oyun" do
 
 	oyun = MyRepo.get_by(Oyun, ad: "cCc")
 	if oyun.not_nil!
-		res = OyunApiRes.new oyun.not_nil!.ad, oyun.not_nil!.bitti
+		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	end
 end
@@ -36,7 +36,7 @@ post "/oyun" do
 	changeset.valid?
 
 	if oyun.not_nil!
-		res = OyunApiRes.new oyun.not_nil!.ad, oyun.not_nil!.bitti
+		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	end
 end
