@@ -34,6 +34,10 @@ class OyunApiRes < ApiRes
 		@ad
 	end
 
+	def bitti
+		@ad
+	end
+
 	def parse
 		res = {"ad" => @ad, "bitti" => @bitti}
 		if @eksik
