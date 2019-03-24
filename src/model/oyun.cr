@@ -10,11 +10,11 @@ class ApiRes
 		@eksikler = Nil
 	end
 
-	def eksik : Bool
+	def eksik
 		if @eksikler.nil?
-			False
+			return False
 		else
-			True
+			return True
 		end
 	end
 
