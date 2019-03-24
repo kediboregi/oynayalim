@@ -21,7 +21,8 @@ get "/oyun" do
 	#queryres = Repo.all(Oyun, query)
 
 	oyun = MyRepo.get_by(Oyun, ad: "cCc")
-	if oyun.not_nil!
+
+	if oyun
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	end
@@ -35,7 +36,7 @@ post "/oyun" do
 	changeset.errors.any?
 	changeset.valid?
 
-	if oyun.not_nil!
+	if oyun
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	end
