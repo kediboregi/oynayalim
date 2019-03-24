@@ -13,27 +13,35 @@ module MyRepo
     end
 end
 
-get "/oyun" do
-	oyun = Oyun.new
-	oyun.ad = "cCc"
-	changeset = MyRepo.insert(oyun)
-	changeset.errors.any?
-	changeset.valid?
+Query = Crecto::Repo::Query
 
-	res = OyunApiRes.new oyun.ad.not_nil!
-	res.parse
+get "/oyun" do
+	#query = Query.new
+	#query = query.where(ad: "cCc").limit(1)
+	#queryres = Repo.all(Oyun, query)
+
+	oyun = MyRepo.get_by(Oyun, ad: "cCc")
+	if oyun.not_nil!
+		res = OyunApiRes.new oyun.not_nil!.ad oyun.not_nil!.bitti
+		res.parse
+	end
 end
 
 post "/oyun" do
 	oyun = Oyun.new
 	oyun.ad = "cCc"
+	oyun.bitti = False
 	changeset = MyRepo.insert(oyun)
 	changeset.errors.any?
 	changeset.valid?
 
-	res = OyunApiRes.new oyun.ad.not_nil!
-	res.parse
+	if oyun.not_nil!
+		res = OyunApiRes.new oyun.not_nil!.ad oyun.not_nil!.bitti
+		res.parse
+	end
 end
+
+
 
 alias JValue   = String | Int32 | Bool | Nil | Array(JValue) | Hash(String, JValue)
 
