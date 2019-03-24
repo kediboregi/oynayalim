@@ -1,6 +1,7 @@
 class Oyun < Crecto::Model
     schema "oyunlar" do
         field :ad, String
+		field :bitti, Bool
     end
 end
 
