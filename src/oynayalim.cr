@@ -1,6 +1,6 @@
 require "kemal"
 require "json"
-require "sqlite3"
+require "mysql"
 require "crecto"
 require "./model/*"
 
@@ -8,8 +8,8 @@ module MyRepo
     extend Crecto::Repo
 
     config do |conf|
-        conf.adapter = Crecto::Adapters::SQLite3
-        conf.database = "my_database.db"
+        conf.adapter = Crecto::Adapters::Mysql
+		conf.uri = ENV["JAWSDB_URL"].not_nil!
     end
 end
 
