@@ -2,7 +2,7 @@ require "kemal"
 require "json"
 require "sqlite3"
 require "crecto"
-require "model/*"
+require "./model/*"
 
 module MyRepo
     extend Crecto::Repo
