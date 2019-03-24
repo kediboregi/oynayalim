@@ -10,7 +10,7 @@ class ApiRes
 		@eksikler = Nil
 	end
 
-	def eksik
+	def eksik()
 		if @eksikler.nil?
 			return False
 		else
