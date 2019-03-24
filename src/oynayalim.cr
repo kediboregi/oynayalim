@@ -35,7 +35,7 @@ end
 post "/oyun" do
 	oyun = Oyun.new
 	oyun.ad = "cCc"
-	oyun.bitti = False
+	oyun.bitti = false
 	changeset = MyRepo.insert(oyun)
 	changeset.errors.any?
 	changeset.valid?
@@ -50,17 +50,6 @@ post "/oyun" do
 	end
 end
 
-
-
 alias JValue   = String | Int32 | Bool | Nil | Array(JValue) | Hash(String, JValue)
-
-get "/d" do
-	#hash = Hash(String, JValue).new()
-	#hash["kod"] = "cCc"
-	#hash["hatalar"] = Array(JValue).new()
-	#hash["hatalar"] << {"code" => "hata_null", "message" => "ss"}
-	#hash["hatalar"] << {"code" => "hata_null", "message" => "dd"}
-	#hash.to_json
-end
 
 Kemal.run(ENV["PORT"].to_i32.not_nil!)
