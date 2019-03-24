@@ -13,7 +13,7 @@ class OyunApiRes
 		@ad
 	end
 
-	def to_json
-		@ad.to_json
+	def parse
+		{ad => @ad}.to_json
 	end
 end
