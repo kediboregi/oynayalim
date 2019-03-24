@@ -12,9 +12,9 @@ class ApiRes
 
 	def eksik()
 		if @eksikler.nil?
-			return False
+			true
 		else
-			return True
+			false
 		end
 	end
 
@@ -41,7 +41,7 @@ class OyunApiRes < ApiRes
 	def parse
 		res = {"ad" => @ad, "bitti" => @bitti}
 		if eksik
-			res.merge!({"eksikler" => eksikler})
+			res.merge!({"eksikler" => @eksikler})
 		end
 		res.to_json
 	end
