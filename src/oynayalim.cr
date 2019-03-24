@@ -21,8 +21,8 @@ session_handler = Session::Handler(Hash(String, String)).new(session_key: "cCc",
 add_handler session_handler
 
 before_all do |req|
-	env.session["ilk_giris"] ||= Time.now.to_s
-	env.session["uuid"] ||= UUID.random.to_s
+	req.session["ilk_giris"] ||= Time.now.to_s
+	req.session["uuid"] ||= UUID.random.to_s
 	{"ilk_giris" => req.session["ilk_giris"], "uuid" => req.session["uuid"]}.to_json
 end
 
