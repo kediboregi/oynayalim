@@ -7,7 +7,7 @@ end
 
 class ApiRes
 	def initialize()
-		@eksikler = Nil
+		@eksikler = nil
 	end
 
 	def eksik()
@@ -41,7 +41,7 @@ class OyunApiRes < ApiRes
 	def parse
 		res = {"ad" => @ad, "bitti" => @bitti}
 		if !eksik
-			res.merge!({"eksikler" => @eksikler.not_nil!})
+			res.merge!({"eksikler" => eksikler.not_nil!})
 		end
 		res.to_json
 	end
