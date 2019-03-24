@@ -40,7 +40,7 @@ class OyunApiRes < ApiRes
 
 	def parse
 		res = {"ad" => @ad, "bitti" => @bitti}
-		if @eksik
+		if eksik
 			res.merge!({"eksikler" => eksikler})
 		end
 		res.to_json
