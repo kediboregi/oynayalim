@@ -11,7 +11,9 @@ targets:
 dependencies:
   kemal:
     github: kemalcr/kemal
-
+  crecto:
+    github: Crecto/crecto
+    
 crystal: 0.27.2
 
 license: MIT
