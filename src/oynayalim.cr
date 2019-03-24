@@ -17,9 +17,17 @@ end
 Query = Crecto::Repo::Query
 
 before_all do |env|
-	env.request.cookies["uuid"].value ||= UUID.random.to_s
-	env.response.cookies["uuid"] << HTTP::Cookie.new(name: "uuid", value: env.request.cookies["uuid"].value, expires: Time.now + 24.years, secure: true)
-	{"uuid" => env.request.cookies["uuid"].value}.to_json
+	id = env.request.cookies["uuid"]?.try &.value
+	if id.nil?
+	  id = Random::Secure.hex
+	  env.request.cookies["uuid"].value ||= UUID.random.to_s
+	  env.response.cookies["uuid"] << HTTP::Cookie.new(name: "uuid", value: env.request.cookies["uuid"].value, expires: Time.now + 24.years, secure: true)
+	end
+end
+
+get "/" do |env|
+	id = env.request.cookies["uuid"]?.try &.value
+  	{"uuid" => id}.to_json
 end
 
 get "/oyun" do |env|
