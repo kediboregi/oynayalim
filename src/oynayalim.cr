@@ -20,7 +20,9 @@ before_all do |env|
 	id = env.request.cookies["uuid"]?.try &.value
 	if id.nil?
 		#id = Random::Secure.hex
-		env.response.cookies << HTTP::Cookie.new(name: "uuid", value: UUID.random.to_s, expires: Time.now + 24.years, secure: true)
+		cook = HTTP::Cookie.new(name: "uuid", value: UUID.random.to_s, expires: Time.now + 24.years, secure: true)
+		env.request.cookies << cook
+		env.response.cookies << cook
 	end
 end
 
