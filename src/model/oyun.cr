@@ -5,27 +5,35 @@ class Oyun < Crecto::Model
     end
 end
 
-class ApiRes
+class EksikRes
 	def initialize()
-		@eksikler = nil
+		@eksikler =  Array(Hash(String, String | Int32).new)
 	end
 
 	def eksik()
-		if @eksikler.nil?
+		if @eksikler.size > 0
 			true
 		else
 			false
 		end
 	end
 
+	def addeksik(ad : String, deger : String)
+		@eksikler << {ad => deger}
+	end
+
 	def eksikler
 		@eksikler
 	end
+
+	def parse
+		res = {"eksikler" => @eksikler}
+		res.to_json
+	end
 end
 
-class OyunApiRes < ApiRes
+class OyunApiRes
 	def initialize(ad : String, bitti : Bool)
-		super()
 		@ad = ad
 		@bitti = bitti
 	end
@@ -40,9 +48,6 @@ class OyunApiRes < ApiRes
 
 	def parse
 		res = {"ad" => @ad, "bitti" => @bitti}
-		if !eksik
-			res.merge!({"eksikler" => eksikler.not_nil!})
-		end
 		res.to_json
 	end
 end
