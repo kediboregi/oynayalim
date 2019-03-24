@@ -13,7 +13,18 @@ module MyRepo
     end
 end
 
-get "/" do
+get "/oyun" do
+	oyun = Oyun.new
+	oyun.ad = "cCc"
+	changeset = MyRepo.insert(oyun)
+	changeset.errors.any?
+	changeset.valid?
+
+	res = OyunApiRes.new oyun.ad.not_nil!
+	res.parse
+end
+
+post "/oyun" do
 	oyun = Oyun.new
 	oyun.ad = "cCc"
 	changeset = MyRepo.insert(oyun)
