@@ -1,5 +1,4 @@
 require "kemal"
-require "session"
 require "json"
 require "mysql"
 require "crecto"
@@ -17,16 +16,13 @@ end
 
 Query = Crecto::Repo::Query
 
-session_handler = Session::Handler(Hash(String, String)).new(session_key: "cCc", secret: "cCc32132ananzaaxd3823")
-add_handler session_handler
-
-before_all do |req|
-	req.session["ilk_giris"] ||= Time.now.to_s
-	req.session["uuid"] ||= UUID.random.to_s
-	{"ilk_giris" => req.session["ilk_giris"], "uuid" => req.session["uuid"]}.to_json
+before_all do |env|
+	env.request.cookies["uuid"].value ||= UUID.random.to_s
+	env.response.cookies["uuid"] << HTTP::Cookie.new(name: "uuid", value: env.request.cookies["uuid"].value, expires: Time.now + 24.years, secure: true)
+	{"uuid" => env.request.cookies["uuid"].value}.to_json
 end
 
-get "/oyun" do |req|
+get "/oyun" do |env|
 	#query = Query.new
 	#query = query.where(ad: "cCc").limit(1)
 	#queryres = Repo.all(Oyun, query)
@@ -43,7 +39,7 @@ get "/oyun" do |req|
 	end
 end
 
-post "/oyun" do |req|
+post "/oyun" do |env|
 	oyun = Oyun.new
 	oyun.ad = "cCc"
 	oyun.bitti = false

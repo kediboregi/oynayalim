@@ -15,8 +15,6 @@ dependencies:
     github: crystal-lang/crystal-mysql
   crecto:
     github: Crecto/crecto
-  session:
-    github: unequaled86/session
 
 crystal: 0.27.2
 
