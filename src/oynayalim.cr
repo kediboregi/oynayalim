@@ -20,7 +20,7 @@ get "/" do
 	changeset.errors.any?
 	changeset.valid?
 
-	res = OyunApiRes.new oyun.ad
+	res = OyunApiRes.new oyun.ad.not_nil!
 	res.parse
 end
 
