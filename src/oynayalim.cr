@@ -1,7 +1,9 @@
 require "kemal"
+require "session"
 require "json"
 require "mysql"
 require "crecto"
+require "uuid"
 require "./model/*"
 
 module MyRepo
@@ -15,7 +17,16 @@ end
 
 Query = Crecto::Repo::Query
 
-get "/oyun" do
+session_handler = Session::Handler(Hash(String, String)).new(session_key: "cCc", secret: "cCc32132ananzaaxd3823")
+add_handler session_handler
+
+before_all do |req|
+	env.session["ilk_giris"] ||= Time.now.to_s
+	env.session["uuid"] ||= UUID.random.to_s
+	{"ilk_giris" => req.session["ilk_giris"]}.to_json
+end
+
+get "/oyun" do |req|
 	#query = Query.new
 	#query = query.where(ad: "cCc").limit(1)
 	#queryres = Repo.all(Oyun, query)
@@ -32,7 +43,7 @@ get "/oyun" do
 	end
 end
 
-post "/oyun" do
+post "/oyun" do |req|
 	oyun = Oyun.new
 	oyun.ad = "cCc"
 	oyun.bitti = false
@@ -49,7 +60,5 @@ post "/oyun" do
 		res.parse
 	end
 end
-
-alias JValue   = String | Int32 | Bool | Nil | Array(JValue) | Hash(String, JValue)
 
 Kemal.run(ENV["PORT"].to_i32.not_nil!)
