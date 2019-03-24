@@ -25,7 +25,7 @@ end
 
 class OyunApiRes < ApiRes
 	def initialize(ad : String, bitti : Bool)
-		super
+		super()
 		@ad = ad
 		@bitti = bitti
 	end
