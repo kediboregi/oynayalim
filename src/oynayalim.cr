@@ -43,7 +43,7 @@ get "/oyun/:ad" do |env|
 	#query = query.where(ad: "cCc").limit(1)
 	#queryres = Repo.all(Oyun, query)
 
-	oyun = MyRepo.get_by(Oyun, ad: ad, uuid: env.get("uuid"))
+	oyun = MyRepo.get_by(Oyun, ad: ad, uuid: env.get("uuid").not_nil!)
 
 	if oyun
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
