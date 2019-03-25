@@ -45,10 +45,10 @@ get "/oyun/:ad" do |env|
 
 	oyunq = Query.new
 	oyunq = oyunq.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
-	oyund = Repo.all(Oyun, oyunq)
+	oyun = Repo.all(Oyun.not_nil!, oyunq)
 
-	if oyund
-		res = OyunApiRes.new oyund.ad.not_nil!, oyund.bitti.not_nil!
+	if oyun
+		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	else
 		res = EksikRes.new
