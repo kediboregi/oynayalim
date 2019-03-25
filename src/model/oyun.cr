@@ -3,7 +3,6 @@ class Oyun < Crecto::Model
         field :ad, String
 		field :bitti, Bool
         field :uuid, String
-		has_many :eller, El
     end
 end
 
