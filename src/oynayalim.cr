@@ -44,7 +44,7 @@ get "/oyun/:ad" do |env|
 	#queryres = Repo.all(Oyun, query)
 
 	oyunq = Query.new
-	oyunq = query.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
+	oyunq = oyunq.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
 	oyun = Repo.all(Oyun, oyunq)
 
 	if oyun
@@ -87,7 +87,7 @@ post "/oyun/skor" do |env|
 	skor4 = env.params.json["skor4"].as(String)
 
 	oyunq = Query.new
-	oyunq = query.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
+	oyunq = oyunq.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
 	oyun = Repo.all(Oyun, oyunq)
 
 	if oyun
