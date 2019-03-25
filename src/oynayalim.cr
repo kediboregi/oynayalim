@@ -5,7 +5,7 @@ require "crecto"
 require "uuid"
 require "./model/*"
 
-module MyRepo
+module Repo
     extend Crecto::Repo
 
     config do |conf|
@@ -65,7 +65,7 @@ post "/oyun" do |env|
 	oyun.ad = ad
 	oyun.bitti = false
 	oyun.uuid = env.get "uuid"
-	changeset = MyRepo.insert(oyun)
+	changeset = Repo.insert(oyun)
 	changeset.errors.any?
 	changeset.valid?
 
@@ -98,7 +98,7 @@ post "/oyun/skor" do |env|
 		el.skor4 = skor4
 		el.oyun = oyun.not_nil!
 
-		changeset = MyRepo.insert(el)
+		changeset = Repo.insert(el)
 		changeset.errors.any?
 		changeset.valid?
 	end
