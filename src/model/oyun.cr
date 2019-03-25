@@ -8,7 +8,7 @@ class Oyun < Crecto::Model
 end
 
 class El < Crecto::Model
-    schema "oyunlar" do
+    schema "eller" do
         field :skor1, String
 		field :skor2, String
 		field :skor3, String
