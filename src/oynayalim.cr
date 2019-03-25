@@ -27,7 +27,7 @@ before_all do |env|
 	end
 
 	if id
-		env.set "uuid" id.not_nil!
+		env.set "uuid", id.not_nil!
 	end
 end
 
