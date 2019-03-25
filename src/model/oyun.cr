@@ -13,7 +13,6 @@ class El < Crecto::Model
 		field :skor2, String
 		field :skor3, String
 		field :skor4, String
-		belongs_to :oyun, Oyun
     end
 end
 
