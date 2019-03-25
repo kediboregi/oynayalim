@@ -86,16 +86,18 @@ post "/oyun/skor" do |env|
 
 	oyun = MyRepo.get_by(Oyun, ad: ad, uuid: env.get("uuid"))
 
-	el = El.new
-	el.skor1 = skor1
-	el.skor2 = skor2
-	el.skor3 = skor3
-	el.skor4 = skor4
-	el.oyun = oyun
+	if oyun
+		el = El.new
+		el.skor1 = skor1
+		el.skor2 = skor2
+		el.skor3 = skor3
+		el.skor4 = skor4
+		el.oyun = oyun.not_nil!
 
-	changeset = MyRepo.insert(el)
-	changeset.errors.any?
-	changeset.valid?
+		changeset = MyRepo.insert(el)
+		changeset.errors.any?
+		changeset.valid?
+	end
 
 	if el
 		res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
