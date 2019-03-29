@@ -34,7 +34,7 @@ get "/oyun/:ad" do |env|
 	#query = query.where(ad: "cCc").limit(1)
 	#queryres = Repo.all(Oyun, query)
 
-	oyun = Oyun.where {_ad: ad, _uuid: env.get("uuid")}
+	oyun = Oyun.where { _ad == ad, _uuid == env.get("uuid") }
 
 	if oyun
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
@@ -69,7 +69,7 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyun = Oyun.where {_ad: ad, _uuid: env.get("uuid")}
+	oyun = Oyun.where { _ad == ad, _uuid == env.get("uuid") }
 
 	if oyun
 		el = Oyun.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4 :oyun_id => oyun.id})
