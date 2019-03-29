@@ -34,7 +34,7 @@ get "/oyun/:ad" do |env|
 
 	if oyun
 		#eller = El.where { _oyun_id == oyun.id }.first
-		oyun
+		oyun.to_h.to_json
 		#res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		#res.parse
 	else
