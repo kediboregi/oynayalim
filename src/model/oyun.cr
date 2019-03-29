@@ -3,13 +3,13 @@ class Oyun < Jennifer::Model::Base
 	mapping(
 		id: Primary32, # same as {type: Int32, primary: true}
 	    ad: String,
-    	bitti: {type: Bool?, default: false},
+    	bitti: {type: Bool, default: false},
 		uuid: String,
 		created_at: Time?,
 		updated_at: Time | Nil
 	)
 
-	has_many :el, El
+	has_many :eller, El
 end
 
 class El < Jennifer::Model::Base
