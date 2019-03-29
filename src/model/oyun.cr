@@ -3,7 +3,7 @@ class Oyun < Jennifer::Model::Base
 	mapping(
 		id: Primary32, # same as {type: Int32, primary: true}
 	    ad: String,
-    	bitti: "Bool",
+    	bitti: Int8,
 		user_uuid: String,
 		created_at: Time?,
 		updated_at: Time | Nil
