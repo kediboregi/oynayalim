@@ -28,33 +28,6 @@ class El < Jennifer::Model::Base
 	belongs_to :oyun, Oyun
 end
 
-class EksikRes
-	def initialize()
-		@eksikler = Array(Hash(String, String | Int32))
-	end
-
-	def eksik()
-		if @eksikler.size > 0
-			true
-		else
-			false
-		end
-	end
-
-	def addeksik(ad : String, deger : String)
-		@eksikler << {ad => deger}
-	end
-
-	def eksikler
-		@eksikler
-	end
-
-	def parse
-		res = {"eksikler" => @eksikler}
-		res.to_json
-	end
-end
-
 class OyunApiRes
 	def initialize(ad : String, bitti : Bool)
 		@ad = ad

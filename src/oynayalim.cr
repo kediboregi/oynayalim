@@ -38,9 +38,7 @@ get "/oyun/:ad" do |env|
 		res = OyunApiRes.new oyun.ad, oyun.bitti.not_nil!
 		res.parse
 	else
-		res = EksikRes.new
-		res.addeksik("cCc", "lol")
-		res.parse
+
 	end
 end
 
@@ -76,9 +74,7 @@ post "/oyun/skor" do |env|
 			res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
 			res.parse
 		else
-			res = EksikRes.new
-			res.addeksik("cCc", "lol")
-			res.parse
+
 		end
 	end
 end
