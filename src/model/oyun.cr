@@ -30,7 +30,7 @@ end
 
 class EksikRes
 	def initialize()
-		@eksikler =  Array(Hash(String, String | Int32)).new
+		@eksikler = Array(Hash(String, String | Int32))
 	end
 
 	def eksik()
