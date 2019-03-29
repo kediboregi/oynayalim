@@ -72,7 +72,7 @@ post "/oyun/skor" do |env|
 	oyun = Oyun.where { _ad == ad & _uuid == env.get("uuid") }
 
 	if oyun
-		el = Oyun.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4 :oyun_id => oyun.id})
+		el = Oyun.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4, :oyun_id => oyun.id})
 
 		if el.save
 			res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
