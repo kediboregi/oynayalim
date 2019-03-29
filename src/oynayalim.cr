@@ -33,10 +33,10 @@ get "/oyun/:ad" do |env|
 	oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.includes(:eller).first!
 
 	if oyun
-		eller = El.where { _oyun_id == oyun.id }.first
-
-		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
-		res.parse
+		#eller = El.where { _oyun_id == oyun.id }.first
+		oyun.to_a
+		#res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
+		#res.parse
 	else
 
 	end
