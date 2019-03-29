@@ -50,7 +50,10 @@ end
 
 class ElApiRes
 	def initialize(skor1 : String, skor2 : String, skor3 : String, skor4 : String)
-
+		@skor1 = skor1
+		@skor2 = skor2
+		@skor3 = skor3
+		@skor4 = skor4
 	end
 
 	def parse
