@@ -16,10 +16,10 @@ class El < Jennifer::Model::Base
 	with_timestamps
 	mapping(
 		id: Primary32, # same as {type: Int32, primary: true}
-	    skor1: String,
-	    skor2: String,
-		skor3: String,
-		skor4: String,
+	    skor1: String?,
+	    skor2: String?,
+		skor3: String?,
+		skor4: String?,
 		oyun_id: Int32?,
 		created_at: Time?,
 		updated_at: Time | Nil
