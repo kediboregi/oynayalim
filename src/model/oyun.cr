@@ -4,7 +4,7 @@ class Oyun < Jennifer::Model::Base
 		id: Primary32, # same as {type: Int32, primary: true}
 	    ad: String,
     	bitti: Bool,
-		uuid: String?,
+		user_uuid: String?,
 		created_at: Time?,
 		updated_at: Time | Nil
 	)
