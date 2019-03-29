@@ -49,6 +49,7 @@ post "/oyun" do |env|
 	oyun = Oyun.build({:ad => ad, :bitti => false, :user_uuid => env.get "uuid"})
 
 	if oyun.save
+		oyun.to_a
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	else
