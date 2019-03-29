@@ -13,8 +13,9 @@ dependencies:
     github: kemalcr/kemal
   mysql:
     github: crystal-lang/crystal-mysql
-  crecto:
-    github: Crecto/crecto
+  jennifer:
+    github: imdrasil/jennifer.cr
+    version: "~> 0.7.1"
 
 crystal: 0.27.2
 
