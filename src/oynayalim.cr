@@ -63,7 +63,7 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyun = Oyun.where { _ad == ad }.first
+	oyun = Oyun.where { _ad == ad && (_user_uuid == env.get("uuid")) }.first
 
 	if oyun
 		el = El.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4, :oyun_id => oyun.id})
