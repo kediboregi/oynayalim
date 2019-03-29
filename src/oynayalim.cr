@@ -33,8 +33,6 @@ get "/oyun/:ad" do |env|
 	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.first
 
 	if oyun
-		oyun = oyun.to_a
-
 		eller = El.where { _oyun_id == oyun.id }.first
 
 		res = OyunApiRes.new oyun.ad, oyun.bitti.not_nil!
@@ -53,7 +51,6 @@ post "/oyun" do |env|
 	oyun = Oyun.build({:ad => ad, :bitti => false, :user_uuid => env.get "uuid"})
 
 	if oyun.save
-		oyun = oyun.to_a
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	else
@@ -73,11 +70,9 @@ post "/oyun/skor" do |env|
 	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.first
 
 	if oyun
-		oyun = oyun.to_a
 		el = Oyun.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4, :oyun_id => oyun.id})
 
 		if el.save
-			el = el.to_a
 			res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
 			res.parse
 		else
