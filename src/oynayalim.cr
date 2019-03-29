@@ -52,9 +52,7 @@ post "/oyun" do |env|
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	else
-		res = EksikRes.new
-		res.addeksik("cCc", "lol")
-		res.parse
+
 	end
 end
 
