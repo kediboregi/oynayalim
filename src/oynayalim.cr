@@ -1,20 +1,11 @@
 require "kemal"
+require "jennifer"
+require "jennifer/adapter/mysql"
 require "json"
-require "mysql"
-require "crecto"
 require "uuid"
 require "./model/*"
 
-module Repo
-    extend Crecto::Repo
-
-    config do |conf|
-        conf.adapter = Crecto::Adapters::Mysql
-		conf.uri = ENV["JAWSDB_URL"].not_nil!
-    end
-end
-
-Query = Crecto::Repo::Query
+Jennifer::Config.from_uri(ENV["JAWSDB_URL"].not_nil!)
 
 before_all do |env|
 	id = env.request.cookies["uuid"]?.try &.value
@@ -61,15 +52,9 @@ post "/oyun" do |env|
 	ad = env.params.json["ad"].as(String)
     #bitti = env.params.json["bitti"].as(Bool)
 
-	oyun = Oyun.new
-	oyun.ad = ad
-	oyun.bitti = false
-	oyun.uuid = env.get "uuid"
-	changeset = Repo.insert(oyun)
-	changeset.errors.any?
-	changeset.valid?
+	oyun = Oyun.build({:ad => ad, :bitti => false, :uuid => env.get "uuid"})
 
-	if oyun
+	if oyun.save
 		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
 		res.parse
 	else
@@ -86,30 +71,19 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyunq = Query.new
-	oyunq = oyunq.where(ad: ad).where(uuid: env.get("uuid")).limit(1)
-	oyun = Repo.all(Oyun, oyunq)
+	oyun = Oyun.where {_ad: ad, _uuid: env.get("uuid")}
 
 	if oyun
-		el = El.new
-		el.skor1 = skor1
-		el.skor2 = skor2
-		el.skor3 = skor3
-		el.skor4 = skor4
-		el.oyun = oyun.not_nil!
+		el = Oyun.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4 :oyun => oyun.id})
 
-		changeset = Repo.insert(el)
-		changeset.errors.any?
-		changeset.valid?
-	end
-
-	if el
-		res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
-		res.parse
-	else
-		res = EksikRes.new
-		res.addeksik("cCc", "lol")
-		res.parse
+		if el.save
+			res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
+			res.parse
+		else
+			res = EksikRes.new
+			res.addeksik("cCc", "lol")
+			res.parse
+		end
 	end
 end
 

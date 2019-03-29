@@ -1,18 +1,30 @@
-class Oyun < Crecto::Model
-    schema "oyunlar" do
-        field :ad, String
-		field :bitti, Bool
-        field :uuid, String
-    end
+class Oyun < Jennifer::Model::Base
+	with_timestamps
+	mapping(
+		id: Primary32, # same as {type: Int32, primary: true}
+	    ad: String,
+    	bitti: {type: Bool?, default: false},
+		uuid: String,
+		created_at: Time?,
+		updated_at: Time | Nil
+	)
+
+	has_many :el, El
 end
 
-class El < Crecto::Model
-    schema "eller" do
-        field :skor1, String
-		field :skor2, String
-		field :skor3, String
-		field :skor4, String
-    end
+class El < Jennifer::Model::Base
+	with_timestamps
+	mapping(
+		id: Primary32, # same as {type: Int32, primary: true}
+	    skor1: String,
+	    skor2: String,
+		skor3: String,
+		skor4: String,
+		created_at: Time?,
+		updated_at: Time | Nil
+	)
+
+	belongs_to :oyun, Oyun
 end
 
 class EksikRes
