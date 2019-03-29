@@ -6,7 +6,7 @@ class Oyun < Jennifer::Model::Base
     	bitti: Int8,
 		user_uuid: String,
 		created_at: Time?,
-		updated_at: Time | Nil
+		updated_at: Time?
 	)
 
 	has_many :eller, El
@@ -22,7 +22,7 @@ class El < Jennifer::Model::Base
 		skor4: String?,
 		oyun_id: Int32?,
 		created_at: Time?,
-		updated_at: Time | Nil
+		updated_at: Time?
 	)
 
 	belongs_to :oyun, Oyun
