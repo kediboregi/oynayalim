@@ -31,8 +31,9 @@ get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 	uuid = env.get("uuid")
 	oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.left_join(El) { _oyuns__id == _oyun_id }.with(:eller).first!
-	#	oyun =  oyun.left_join(El) { _oyun_id == oyun.id }.with(:eller)
+
 	if oyun
+		puts oyun
 		#eller = El.where { _oyun_id == oyun.id }.first
 		oyun.to_json
 		#res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
