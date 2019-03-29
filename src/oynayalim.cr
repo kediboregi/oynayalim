@@ -34,7 +34,7 @@ get "/oyun/:ad" do |env|
 
 	if oyun
 		oyun.to_a
-		res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
+		res = OyunApiRes.new oyun["ad"], oyun.bitti.not_nil!
 		res.parse
 	else
 		res = EksikRes.new
