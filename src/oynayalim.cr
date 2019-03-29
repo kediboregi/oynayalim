@@ -30,7 +30,7 @@ end
 get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 
-	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }
+	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.limit(1)
 
 	if oyun
 		oyun = oyun.to_a
@@ -67,7 +67,7 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }
+	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.limit(1)
 
 	if oyun
 		oyun = oyun.to_a
