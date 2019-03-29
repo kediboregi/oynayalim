@@ -1,4 +1,6 @@
 class Oyun < Jennifer::Model::Base
+	include JSON::Serializable
+
 	with_timestamps
 	mapping(
 		id: Primary32, # same as {type: Int32, primary: true}
@@ -13,6 +15,8 @@ class Oyun < Jennifer::Model::Base
 end
 
 class El < Jennifer::Model::Base
+	include JSON::Serializable
+
 	with_timestamps
 	mapping(
 		id: Primary32, # same as {type: Int32, primary: true}
