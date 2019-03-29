@@ -30,10 +30,13 @@ end
 get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 
-	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.limit(1)
+	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.first
 
 	if oyun
 		oyun = oyun.to_a
+
+		eller = El.where { _oyun_id == oyun.id }.first
+
 		res = OyunApiRes.new oyun.ad, oyun.bitti.not_nil!
 		res.parse
 	else
@@ -67,7 +70,7 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.limit(1)
+	oyun = Oyun.where { _ad == ad & (_user_uuid == env.get("uuid")) }.first
 
 	if oyun
 		oyun = oyun.to_a
