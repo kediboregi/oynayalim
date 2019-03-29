@@ -30,7 +30,7 @@ end
 get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 	uuid = env.get("uuid")
-	oyun = Oyun.where { _ad == ad & (_user_uuid == uuid) }.first!.includes(:eller)
+	oyun = Oyun.where { _ad == ad & (_user_uuid == uuid) }.includes(:eller).first!
 
 	if oyun
 		eller = El.where { _oyun_id == oyun.id }.first
