@@ -31,7 +31,7 @@ get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 	uuid = env.get("uuid")
 	#oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.right_join(El) { _oyuns__id == _oyun_id }.with(:eller).first!
-	oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.eager_load("els").first!
+	oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.eager_load("eller").first!
 
 	if oyun
 		puts oyun
