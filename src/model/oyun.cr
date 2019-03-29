@@ -20,6 +20,7 @@ class El < Jennifer::Model::Base
 	    skor2: String,
 		skor3: String,
 		skor4: String,
+		oyun_id: Int32?,
 		created_at: Time?,
 		updated_at: Time | Nil
 	)
