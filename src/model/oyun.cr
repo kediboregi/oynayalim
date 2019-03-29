@@ -1,5 +1,5 @@
 class Oyun < Jennifer::Model::Base
-	include JSON::Serializable
+	include JSON::Serializable::Unmapped
 
 	with_timestamps
 	mapping(
@@ -15,7 +15,7 @@ class Oyun < Jennifer::Model::Base
 end
 
 class El < Jennifer::Model::Base
-	include JSON::Serializable
+	include JSON::Serializable::Unmapped
 
 	with_timestamps
 	mapping(
