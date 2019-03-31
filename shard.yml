@@ -11,8 +11,6 @@ targets:
 dependencies:
   kemal:
     github: kemalcr/kemal
-  jennifer:
-    github: imdrasil/jennifer.cr
   granite:
     github: amberframework/granite
   mysql:

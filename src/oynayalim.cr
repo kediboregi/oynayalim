@@ -1,11 +1,12 @@
 require "kemal"
-require "granite/adapter/mysql"
 require "json"
 require "uuid"
+
+Granite::Adapters << Granite::Adapter::Mysql.new({name: "mysql", url: ENV["JAWSDB_URL"].not_nil!})
+
+require "granite/adapter/mysql"
 require "./model/*"
 
-#Jennifer::Config.from_uri(ENV["JAWSDB_URL"].not_nil!)
-Granite::Adapters << Granite::Adapter::Mysql.new({name: "mysql", url: ENV["JAWSDB_URL"].not_nil!})
 
 before_all do |env|
 	id = env.request.cookies["uuid"]?.try &.value
