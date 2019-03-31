@@ -20,14 +20,3 @@ class El < Granite::Base
 
 	belongs_to oyun : Oyun
 end
-
-class OyunApiRes
-	def initialize(oyun : Oyun)
-		@oyun = oyun
-	end
-
-	def parse
-		res = {"ad" => @oyun.ad, "bitti" => @oyun.bitti, "user_uuid" => @oyun.user_uuid, "eller" => @oyun.eller}
-		res.to_json
-	end
-end

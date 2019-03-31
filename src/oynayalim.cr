@@ -59,14 +59,15 @@ post "/oyun" do |env|
 	end
 end
 
-post "/oyun/skor" do |env|
-	ad = env.params.json["ad"].as(String)
+post "/oyun/skor/:id" do |env|
+	id = env.params.url["id"].to_i64
+	#ad = env.params.json["ad"].as(String)
 	skor1 = env.params.json["skor1"].as(String)
 	skor2 = env.params.json["skor2"].as(String)
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	oyun = Oyun.find_by(ad: ad, user_uuid: env.get("uuid"))
+	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
 
 	if oyun
 		el = El.new
