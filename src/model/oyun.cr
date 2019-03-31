@@ -23,9 +23,7 @@ end
 
 class OyunApiRes
 	def initialize(oyun : Oyun)
-		@ad = oyun.ad
-		@bitti = oyun.bitti
-		@eller = oyun.eller
+		@oyun = oyun
 	end
 
 	def ad
@@ -37,7 +35,7 @@ class OyunApiRes
 	end
 
 	def parse
-		res = {"ad" => @ad, "bitti" => @bitti, "eller" => @eller}
+		res = {"ad" => @oyun.ad, "bitti" => @oyun.bitti, "eller" => @oyun.eller}
 		res.to_json
 	end
 end
