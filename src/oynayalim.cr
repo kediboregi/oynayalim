@@ -29,7 +29,7 @@ get "/" do |env|
 end
 
 get "/oyun/:id" do |env|
-	id = env.params.url["id"].as(Int64)
+	id = env.params.url["id"].to_i64
 	#ad = env.params.url["ad"].as(String)
 	uuid = env.get("uuid")
 
@@ -88,7 +88,7 @@ post "/oyun/skor" do |env|
 end
 
 put "/oyun/:id" do |env|
-	id = env.params.url["id"].as(Int64)
+	id = env.params.url["id"].to_i64
 	ad = env.params.json["ad"].as(String)
 
 	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
