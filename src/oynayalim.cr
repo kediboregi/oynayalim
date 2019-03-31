@@ -28,6 +28,19 @@ get "/" do |env|
   	{"uuid" => id}.to_json
 end
 
+get "/oyunlar" do |env|
+	uuid = env.get("uuid")
+
+	oyunlar = Oyun.find_by(user_uuid: env.get("uuid").as(String).not_nil!)
+
+
+	if oyunlar
+		oyunlar.to_json
+	else
+		{"status" => "error", "message" => "not_found"}.to_json
+	end
+end
+
 get "/oyun/:id" do |env|
 	id = env.params.url["id"].to_i64
 	#ad = env.params.url["ad"].as(String)
