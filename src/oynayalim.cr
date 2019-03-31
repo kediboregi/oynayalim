@@ -48,7 +48,7 @@ post "/oyun" do |env|
 	oyun = Oyun.new
 	oyun.ad = ad
 	oyun.bitti = false
-	oyun.user_uuid = env.get "uuid".as(String)
+	oyun.user_uuid = env.get("uuid").as(String).not_nil!
 
 	if oyun.save
 		env.response.status_code = 201
