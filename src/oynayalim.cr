@@ -32,7 +32,7 @@ get "/oyun/:ad" do |env|
 	ad = env.params.url["ad"].as(String)
 	uuid = env.get("uuid")
 
-	oyun = Oyun.find_by(ad: ad)
+	oyun = Oyun.find_by(ad: ad, user_uuid: env.get("uuid").as(String).not_nil!)
 
 	if oyun
 		{"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}.to_json
@@ -91,13 +91,16 @@ put "/oyun" do |env|
 	cad = env.params.json["cad"].as(String)
 
 	oyun = Oyun.find_by(ad: ad, user_uuid: env.get("uuid"))
-	oyun.ad = cad
 
-	if oyun.save
-		env.response.status_code = 201
-		oyun.to_json
-	else
-		env.response.status_code = 401
+	if oyun
+		oyun.ad = cad
+
+		if oyun.save
+			env.response.status_code = 201
+			oyun.to_json
+		else
+			env.response.status_code = 401
+		end
 	end
 end
 
