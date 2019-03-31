@@ -1,41 +1,31 @@
-class Oyun < Jennifer::Model::Base
-	include JSON::Serializable::Unmapped
+class Oyun < Granite::Base
+	adapter mysql
+	table_name oyuns
+	field ad : String
+	field bitti : Bool
+	field user_uuid : String
+	timestamps
 
-	with_timestamps
-	mapping(
-		id: Primary32, # same as {type: Int32, primary: true}
-	    ad: String,
-    	bitti: Bool,
-		user_uuid: String,
-		created_at: Time?,
-		updated_at: Time?
-	)
-
-	has_many :eller, El
+	has_many eller : El
 end
 
-class El < Jennifer::Model::Base
-	include JSON::Serializable::Unmapped
+class El < Granite::Base
+	adapter mysql
+	table_name els
+	field skor1 : String
+	field skor2 : String
+	field skor3 : String
+	field skor4 : String
+	timestamps
 
-	with_timestamps
-	mapping(
-		id: Primary32, # same as {type: Int32, primary: true}
-	    skor1: String?,
-	    skor2: String?,
-		skor3: String?,
-		skor4: String?,
-		oyun_id: Int32?,
-		created_at: Time?,
-		updated_at: Time?
-	)
-
-	belongs_to :oyun, Oyun
+	belongs_to oyun : Oyun
 end
 
 class OyunApiRes
-	def initialize(ad : String, bitti : Bool)
-		@ad = ad
-		@bitti = bitti
+	def initialize(oyun : Oyun)
+		@ad = oyun.ad
+		@bitti = oyun.bitti
+		@eller = oyun.eller
 	end
 
 	def ad
@@ -47,7 +37,7 @@ class OyunApiRes
 	end
 
 	def parse
-		res = {"ad" => @ad, "bitti" => @bitti}
+		res = {"ad" => @ad, "bitti" => @bitti, "eller" => @eller}
 		res.to_json
 	end
 end
