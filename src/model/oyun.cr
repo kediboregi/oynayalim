@@ -26,30 +26,8 @@ class OyunApiRes
 		@oyun = oyun
 	end
 
-	def ad
-		@ad
-	end
-
-	def bitti
-		@ad
-	end
-
 	def parse
-		res = {"ad" => @oyun.ad, "bitti" => @oyun.bitti, "eller" => @oyun.eller}
-		res.to_json
-	end
-end
-
-class ElApiRes
-	def initialize(skor1 : String, skor2 : String, skor3 : String, skor4 : String)
-		@skor1 = skor1
-		@skor2 = skor2
-		@skor3 = skor3
-		@skor4 = skor4
-	end
-
-	def parse
-		res = {"skor1" => @skor1, "skor2" => @skor2, "skor3" => @skor3, "skor4" => @skor4}
+		res = {"ad" => @oyun.ad, "bitti" => @oyun.bitti, "user_uuid" => @oyun.user_uuid, "eller" => @oyun.eller}
 		res.to_json
 	end
 end

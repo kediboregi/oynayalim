@@ -35,35 +35,27 @@ get "/oyun/:ad" do |env|
 	oyun = Oyun.find_by(ad: ad)
 
 	if oyun
-		res = OyunApiRes.new oyun.not_nil!
-		res.parse
+		{"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}.to_json
+	else
+		{"status" => "error", "message" => "not_found"}.to_json
 	end
-
-	#oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.right_join(El) { _oyuns__id = _oyun_id }.with(:eller).first!
-	#oyun = Oyun.where { and(_ad == ad, _user_uuid == uuid) }.eager_load("eller").group(addresses: ["street"], contacts: ["name"]).pluck("addresses.street", "contacts.name").first!
-
-	#if oyun
-		#puts oyun
-		#eller = El.where { _oyun_id == oyun.id }.first
-		#res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
-		#res.parse
-	#else
-
-	#end
 end
 
 post "/oyun" do |env|
 	ad = env.params.json["ad"].as(String)
     #bitti = env.params.json["bitti"].as(Bool)
 
-	#oyun = Oyun.build({:ad => ad, :bitti => false, :user_uuid => env.get "uuid"})
+	oyun = Oyun.new
+	oyun.ad = ad
+	oyun.bitti = false
+	oyun.user_uuid = env.get "uuid"
 
-	#if oyun.save
-		#res = OyunApiRes.new oyun.ad.not_nil!, oyun.bitti.not_nil!
-		#res.parse
-	#else
-
-	#end
+	if oyun.save
+		env.response.status_code = 201
+		oyun.to_json
+	else
+		env.response.status_code = 400
+	end
 end
 
 post "/oyun/skor" do |env|
@@ -73,22 +65,40 @@ post "/oyun/skor" do |env|
 	skor3 = env.params.json["skor3"].as(String)
 	skor4 = env.params.json["skor4"].as(String)
 
-	#oyun = Oyun.where { _ad == ad && (_user_uuid == env.get("uuid")) }.first
+	oyun = Oyun.find_by(ad: ad, user_uuid: env.get("uuid"))
 
-	#if oyun
-		#el = El.build({:skor1 => skor1, :skor2 => skor2, :skor3 => skor3, :skor4 => skor4, :oyun_id => oyun.id})
+	if oyun
+		el = El.new
+		el.skor1 = skor1
+		el.skor2 = skor2
+		el.skor3 = skor3
+		el.skor4 = skor4
+		el.oyun = oyun
 
-		#if el.save
-			#res = ElApiRes.new el.skor1.not_nil!, el.skor2.not_nil!, el.skor3.not_nil!, el.skor4.not_nil!
-			#res.parse
-		#else
-
-		#end
-	#end
+		if el.save
+			env.response.status_code = 201
+			oyun.to_json
+		else
+			env.response.status_code = 400
+		end
+	else
+		env.response.status_code = 400
+	end
 end
 
 put "/oyun" do |env|
+	ad = env.params.json["ad"].as(String)
+	cad = env.params.json["cad"].as(String)
 
+	oyun = Oyun.find_by(ad: ad, user_uuid: env.get("uuid"))
+	oyun.ad = cad
+
+	if oyun.save
+		env.response.status_code = 201
+		oyun.to_json
+	else
+		env.response.status_code = 401
+	end
 end
 
 Kemal.run(ENV["PORT"].to_i32.not_nil!)
