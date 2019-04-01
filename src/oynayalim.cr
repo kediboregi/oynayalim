@@ -9,7 +9,7 @@ require "./model/*"
 
 
 before_all do |env|
-	id = env.request.headers["accessToken"]?.try &.value
+	id = env.request.headers["accessToken"]?
 
 	if id
 		env.set "logged", true
