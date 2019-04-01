@@ -19,10 +19,6 @@ before_all do |env|
 	end
 end
 
-get "/" do |env|
-
-end
-
 get "/login" do |env|
 	id = UUID.random.to_s
 	env.response.headers["accessToken"] = id
