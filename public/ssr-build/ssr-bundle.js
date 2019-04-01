@@ -1671,7 +1671,9 @@ function getOyunlar() {
 var ACCESS_TOKEN_KEY = 'accessToken';
 
 function login() {
-	setAccessToken(getLogin()["accessToken"]);
+	getLogin().then(function (data) {
+		setAccessToken(data["accessToken"]);
+	});
 	return true;
 }
 
@@ -1826,8 +1828,11 @@ var home_Home = function (_Component) {
 	}
 
 	Home.prototype.componentDidMount = function componentDidMount() {
-		var oyunlar = getOyunlar();
-		this.setState({ oyunlar: oyunlar });
+		var _this2 = this;
+
+		getOyunlar().then(function (oyunlar) {
+			_this2.setState({ oyunlar: oyunlar });
+		});
 	};
 
 	Home.prototype.render = function render(_ref, _ref2) {
