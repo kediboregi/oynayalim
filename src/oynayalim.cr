@@ -35,10 +35,11 @@ get "/oyunlar" do |env|
 	oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [env.get("uuid").as(String).not_nil!])
 
 	if oyunlar
+		res = Set(Hash(String, String | Int64 | Oyun | El | Int32 | Bool | Set(Hash(String, String | Int64 | Oyun | El | Int32 | Bool)))).new
 		oyunlar.each do |oyun|
-  	    	oyun.eller
+			res << {"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}
 		end
-		oyunlar.to_json
+		res.to_json
 	else
 		{"status" => "error", "message" => "not_found"}.to_json
 	end
