@@ -7,7 +7,6 @@ Granite::Adapters << Granite::Adapter::Mysql.new({name: "mysql", url: ENV["JAWSD
 require "granite/adapter/mysql"
 require "./model/*"
 
-
 before_all do |env|
 	id = env.request.headers["accessToken"]?
 
