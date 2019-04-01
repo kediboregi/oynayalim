@@ -35,7 +35,7 @@ get "/oyunlar" do |env|
 	oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [env.get("uuid").as(String).not_nil!])
 
 	if oyunlar
-		res = Set(Hash(String, String | Int64 | Oyun | El | Int32 | Bool | Set(Hash(String, String | Int64 | Oyun | El | Int32 | Bool)))).new
+		res = Set(Hash(String, Bool | Granite::AssociationCollection(Oyun, El) | String | Nil)).new
 		oyunlar.each do |oyun|
 			res << {"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}
 		end
