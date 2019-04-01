@@ -1623,9 +1623,9 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// EXTERNAL MODULE: ./style/index.css
-var style = __webpack_require__("rq4c");
-var style_default = /*#__PURE__*/__webpack_require__.n(style);
+// EXTERNAL MODULE: ../node_modules/bootstrap/dist/css/bootstrap.css
+var bootstrap = __webpack_require__("w26S");
+var bootstrap_default = /*#__PURE__*/__webpack_require__.n(bootstrap);
 
 // EXTERNAL MODULE: ../node_modules/preact/dist/preact.min.js
 var preact_min = __webpack_require__("KM04");
@@ -1731,58 +1731,66 @@ function isTokenExpired(token) {
 var match = __webpack_require__("sw5u");
 var match_default = /*#__PURE__*/__webpack_require__.n(match);
 
-// EXTERNAL MODULE: ./components/header/style.css
-var header_style = __webpack_require__("u3et");
-var header_style_default = /*#__PURE__*/__webpack_require__.n(header_style);
-
 // CONCATENATED MODULE: ./components/header/index.js
 
 
 
 
 
-
 var header__ref = Object(preact_min["h"])(
-	'h1',
-	null,
-	'Preact App'
+	'a',
+	{ 'class': 'navbar-brand', href: '#' },
+	'Oynayal\u0131m'
+);
+
+var header__ref2 = Object(preact_min["h"])(
+	'button',
+	{ 'class': 'navbar-toggler', type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarText', 'aria-controls': 'navbarText', 'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
+	Object(preact_min["h"])('span', { 'class': 'navbar-toggler-icon' })
+);
+
+var _ref3 = Object(preact_min["h"])(
+	'ul',
+	{ 'class': 'navbar-nav mr-auto' },
+	Object(preact_min["h"])(
+		'li',
+		{ 'class': 'nav-item' },
+		Object(preact_min["h"])(
+			match["Link"],
+			{ 'class': 'nav-link', activeClassName: 'active', href: '/' },
+			'Home'
+		)
+	)
 );
 
 var header_Header = function Header() {
 	return Object(preact_min["h"])(
-		'header',
-		{ 'class': header_style_default.a.header },
+		'nav',
+		{ 'class': 'navbar navbar-dark bg-dark' },
 		header__ref,
+		header__ref2,
 		Object(preact_min["h"])(
-			'nav',
-			null,
-			Object(preact_min["h"])(
-				match["Link"],
-				{ activeClassName: header_style_default.a.active, href: '/' },
-				'Home'
+			'div',
+			{ 'class': 'collapse navbar-collapse', id: 'navbarText' },
+			_ref3,
+			isLoggedIn() ? Object(preact_min["h"])(
+				'button',
+				{ className: 'btn btn-danger log', onClick: function onClick() {
+						return logout();
+					} },
+				'Log out '
+			) : Object(preact_min["h"])(
+				'button',
+				{ className: 'btn btn-info log', onClick: function onClick() {
+						return login();
+					} },
+				'Log In'
 			)
-		),
-		isLoggedIn() ? Object(preact_min["h"])(
-			'button',
-			{ className: 'btn btn-danger log', onClick: function onClick() {
-					return logout();
-				} },
-			'Log out '
-		) : Object(preact_min["h"])(
-			'button',
-			{ className: 'btn btn-info log', onClick: function onClick() {
-					return login();
-				} },
-			'Log In'
 		)
 	);
 };
 
 /* harmony default export */ var header = (header_Header);
-// EXTERNAL MODULE: ./routes/home/style.css
-var home_style = __webpack_require__("ZAL5");
-var home_style_default = /*#__PURE__*/__webpack_require__.n(home_style);
-
 // CONCATENATED MODULE: ./routes/home/index.js
 
 
@@ -1798,9 +1806,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
-var _ref3 = Object(preact_min["h"])(
+var home__ref3 = Object(preact_min["h"])(
 	'h1',
 	null,
 	'Home'
@@ -1842,8 +1848,8 @@ var home_Home = function (_Component) {
 
 		return Object(preact_min["h"])(
 			'div',
-			{ 'class': home_style_default.a.home },
-			_ref3,
+			null,
+			home__ref3,
 			_ref4,
 			isLoggedIn() ? Object(preact_min["h"])(
 				'ul',
@@ -1863,10 +1869,6 @@ var home_Home = function (_Component) {
 }(preact_min["Component"]);
 
 
-// EXTERNAL MODULE: ./routes/oyun/style.css
-var oyun_style = __webpack_require__("LYpt");
-var oyun_style_default = /*#__PURE__*/__webpack_require__.n(oyun_style);
-
 // CONCATENATED MODULE: ./routes/oyun/index.js
 
 
@@ -1875,7 +1877,6 @@ function oyun__classCallCheck(instance, Constructor) { if (!(instance instanceof
 function oyun__possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function oyun__inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -1927,7 +1928,7 @@ var oyun_Oyun = function (_Component) {
 
 		return Object(preact_min["h"])(
 			'div',
-			{ 'class': oyun_style_default.a.profile },
+			null,
 			Object(preact_min["h"])(
 				'h1',
 				null,
@@ -2678,14 +2679,6 @@ module.exports = setup;
 
 /***/ }),
 
-/***/ "LYpt":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"profile":"profile__17NWW"};
-
-/***/ }),
-
 /***/ "M8l6":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3185,14 +3178,6 @@ module.exports = function enhanceError(error, config, code, request, response) {
   error.response = response;
   return error;
 };
-
-/***/ }),
-
-/***/ "ZAL5":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"home":"home__2Q5nZ"};
 
 /***/ }),
 
@@ -4033,13 +4018,6 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ "rq4c":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ "sw5u":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4211,14 +4189,6 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ "u3et":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"header":"header__2MqSo","active":"active__27Q54"};
-
-/***/ }),
-
 /***/ "uz6X":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4290,6 +4260,13 @@ module.exports = function dispatchRequest(config) {
     return Promise.reject(reason);
   });
 };
+
+/***/ }),
+
+/***/ "w26S":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
