@@ -20,7 +20,7 @@ before_all do |env|
 end
 
 get "/" do |env|
-	render "public/index.html"
+	env.redirect "index.html"
 end
 
 get "/login" do |env|
@@ -35,6 +35,9 @@ get "/oyunlar" do |env|
 	oyunlar = Oyun.find_by(user_uuid: env.get("uuid").as(String).not_nil!)
 
 	if oyunlar
+		oyunlar.each do |oyun|
+  	    	oyun.eller
+		end
 		oyunlar.to_json
 	else
 		{"status" => "error", "message" => "not_found"}.to_json
