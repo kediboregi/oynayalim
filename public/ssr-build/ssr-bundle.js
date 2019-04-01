@@ -1668,14 +1668,6 @@ function getOyunlar() {
 //import decode from 'jwt-decode';
 
 
-function getStorage() {
-	var storage = { getItem: function getItem() {}, setItem: function setItem() {} };
-	if (typeof localStorage === 'object') {
-		storage = localStorage;
-	}
-	return storage;
-}
-
 var ACCESS_TOKEN_KEY = 'accessToken';
 
 function login() {
@@ -1689,11 +1681,15 @@ function logout() {
 }
 
 function getAccessToken() {
-	return getStorage().getItem(ACCESS_TOKEN_KEY);
+	if (typeof window !== "undefined") {
+		return localStorage.getItem(ACCESS_TOKEN_KEY);
+	}
 }
 
 function clearAccessToken() {
-	getStorage().removeItem(ACCESS_TOKEN_KEY);
+	if (typeof window !== "undefined") {
+		localStorage.removeItem(ACCESS_TOKEN_KEY);
+	}
 }
 
 // Helper function that will allow us to extract the access_token and id_token
@@ -1704,7 +1700,9 @@ function getParameterByName(name) {
 
 // Get and store access_token in local storage
 function setAccessToken(accessToken) {
-	getStorage().setItem(ACCESS_TOKEN_KEY, accessToken);
+	if (typeof window !== "undefined") {
+		localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+	}
 }
 
 function isLoggedIn() {
