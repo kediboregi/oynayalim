@@ -32,7 +32,7 @@ end
 get "/oyunlar" do |env|
 	uuid = env.get("uuid")
 
-	oyunlar = Oyun.find_by(user_uuid: env.get("uuid").as(String).not_nil!)
+	oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [env.get("uuid").as(String).not_nil!])
 
 	if oyunlar
 		oyunlar.each do |oyun|
