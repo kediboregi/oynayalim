@@ -9,30 +9,30 @@ require "./model/*"
 
 
 before_all do |env|
-	id = env.request.cookies["uuid"]?.try &.value
-	if id.nil?
-		#id = Random::Secure.hex
-		id = UUID.random.to_s
-		cook = HTTP::Cookie.new(name: "uuid", value: id, expires: Time.now + 24.years, secure: true)
-		env.request.cookies << cook
-		env.response.cookies << cook
-	end
+	id = env.request.headers["accessToken"]?.try &.value
 
 	if id
+		env.set "logged", true
 		env.set "uuid", id.not_nil!
+	else
+		env.set "logged", false
 	end
 end
 
 get "/" do |env|
-	id = env.request.cookies["uuid"]?.try &.value
-  	{"uuid" => id}.to_json
+
+end
+
+get "/login" do |env|
+	id = UUID.random.to_s
+	env.response.headers["accessToken"] = id
+	{"accessToken" => id}.to_json
 end
 
 get "/oyunlar" do |env|
 	uuid = env.get("uuid")
 
 	oyunlar = Oyun.find_by(user_uuid: env.get("uuid").as(String).not_nil!)
-
 
 	if oyunlar
 		oyunlar.to_json
