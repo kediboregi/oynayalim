@@ -19,7 +19,7 @@ before_all do |env|
 end
 
 get "/" do |env|
-	env.redirect "index.html"
+	#env.redirect "index.html"
 end
 
 get "/login" do |env|
