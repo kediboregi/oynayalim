@@ -8,6 +8,7 @@ require "granite/adapter/mysql"
 require "./model/*"
 
 before_all do |env|
+	env.response.headers["Access-Control-Allow-Origin"] = "*"
 	id = env.request.headers["accessToken"]?
 
 	if id
