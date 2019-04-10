@@ -9,6 +9,9 @@ require "./model/*"
 
 before_all do |env|
 	env.response.headers["Access-Control-Allow-Origin"] = "*"
+	env.response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+    env.response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+
 	id = env.request.headers["accessToken"]?
 
 	if id
@@ -30,18 +33,22 @@ get "/login" do |env|
 end
 
 get "/oyunlar" do |env|
-	uuid = env.get("uuid")
+	if env.get("logged")
+		uuid = env.get("uuid")
 
-	oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [env.get("uuid").as(String).not_nil!])
+		oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [env.get("uuid").as(String).not_nil!])
 
-	if oyunlar
-		res = Set(Hash(String, Bool | Granite::AssociationCollection(Oyun, El) | String | Nil)).new
-		oyunlar.each do |oyun|
-			res << {"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}
+		if oyunlar
+			res = Set(Hash(String, Bool | Granite::AssociationCollection(Oyun, El) | String | Nil)).new
+			oyunlar.each do |oyun|
+				res << {"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}
+			end
+			res.to_json
+		else
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
-		res.to_json
 	else
-		{"status" => "error", "message" => "not_found"}.to_json
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
