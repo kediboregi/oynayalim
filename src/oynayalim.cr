@@ -11,7 +11,7 @@ before_all do |env|
 	env.response.headers["Access-Control-Allow-Origin"] = "*"
 	env.response.headers["Access-Control-Allow-Credentials"] = "true"
 	env.response.headers["Access-Control-Allow-Methods"] = "HEAD, GET, PUT, POST, DELETE, OPTIONS"
-    env.response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, accesstoken"
+    env.response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Origin, Content-Type, Cache-Control, Accept, accesstoken"
 
 	id = env.request.headers["accessToken"]?
 
