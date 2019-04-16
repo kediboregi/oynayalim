@@ -25,19 +25,28 @@ class CorsHandler < Kemal::Handler
 end
 
 class AuthHandler < Kemal::Handler
-	only ["/oyunlar"]
+	only ["/oyunlar"], "GET"
+	only ["/oyunlar"], "POST"
+	only ["/oyunlar/:id"], "GET"
+	only ["/oyunlar/:id"], "PUT"
+	only ["/oyunlar/:id"], "DELETE"
 
 	def call(env)
 		return call_next(env) unless only_match?(env)
 
 		id = env.request.headers["accessToken"]?
+		begin
+			uuid = UUID.new(id.not_nil!).v4?
+		rescue
+			uuid = false
+		end
 
-		if id
+		if id && uuid
 			env.set "logged", true
 			env.set "uuid", id.not_nil!
 			return call_next(env)
 		else
-			#env.set "logged", false
+			env.set "logged", false
 			{"status" => "error", "message" => "not_logged"}.to_json
 		end
 	end
@@ -47,15 +56,15 @@ end
 add_handler CorsHandler.new
 add_handler AuthHandler.new
 
-
-#before_all do |env|
+#before_all "/oyunlar" do |env|
 #	id = env.request.headers["accessToken"]?
 #
 #	if id
 #		env.set "logged", true
 #		env.set "uuid", id.not_nil!
 #	else
-#		env.set "logged", false
+#		#env.set "logged", false
+#		{"status" => "error", "message" => "not_logged"}.to_json
 #	end
 #end
 
@@ -70,7 +79,6 @@ get "/login" do |env|
 end
 
 options "/oyunlar" do |env|
-
 end
 
 get "/oyunlar" do |env|
@@ -80,10 +88,11 @@ get "/oyunlar" do |env|
 		oyunlar = Oyun.all("WHERE user_uuid = ? ORDER BY created_at DESC", [uuid])
 
 		if oyunlar
-			res = Set(Hash(String, Int64 | Bool | Granite::AssociationCollection(Oyun, El) | String | Nil) | Oyun).new
+			res = Set(Hash(String, Int64 | Bool | Granite::AssociationCollection(Oyun, El) | String | Time | Nil)).new
 			oyunlar.each do |oyun|
-				#res << oyun
-				res << {"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}
+				res << {"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "created_at" => oyun.created_at, "eller" => oyun.eller}
+				#oyunh = {"eller" => oyun.eller}.merge(oyun.to_h)
+				#res << {"eller" => oyun.eller}.merge(oyun.to_h)
 			end
 			res.to_json
 		else
@@ -94,22 +103,6 @@ get "/oyunlar" do |env|
 	end
 end
 
-get "/oyunlar/:id" do |env|
-	id = env.params.url["id"].to_i64
-	#ad = env.params.url["ad"].as(String)
-	uuid = env.get("uuid")
-
-	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
-
-	if oyun
-		{"ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}.to_json
-	else
-		{"status" => "error", "message" => "not_found"}.to_json
-	end
-end
-options "/oyun" do |env|
-
-end
 post "/oyunlar" do |env|
 	ad = env.params.json["ad"].as(String)
     #bitti = env.params.json["bitti"].as(Bool)
@@ -126,31 +119,20 @@ post "/oyunlar" do |env|
 	end
 end
 
-post "/oyunlar/skor/:id" do |env|
-	id = env.params.url["id"].to_i64
-	#ad = env.params.json["ad"].as(String)
-	skor1 = env.params.json["skor1"].as(String)
-	skor2 = env.params.json["skor2"].as(String)
-	skor3 = env.params.json["skor3"].as(String)
-	skor4 = env.params.json["skor4"].as(String)
+options "/oyunlar/:id" do |env|
+end
 
-	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
+get "/oyunlar/:id" do |env|
+	id = env.params.url["id"].to_i64
+	#ad = env.params.url["ad"].as(String)
+	uuid = env.get("uuid")
+
+	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
 
 	if oyun
-		el = El.new
-		el.skor1 = skor1
-		el.skor2 = skor2
-		el.skor3 = skor3
-		el.skor4 = skor4
-		el.oyun = oyun
-
-		if el.save
-			oyun.to_json
-		else
-			env.response.status_code = 400
-		end
+		{"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}.to_json
 	else
-		env.response.status_code = 400
+		{"status" => "error", "message" => "not_found"}.to_json
 	end
 end
 
@@ -177,13 +159,44 @@ delete "/oyunlar/:id" do |env|
 	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
 
 	if oyun
+		oid = oyun.id
 		if oyun.destroy
-			{"status" => "success", "message" => "deleted"}.to_json
+			{"id" => oid, "status" => "success", "message" => "deleted"}.to_json
 		else
 			{"status" => "error", "message" => "not_deleted"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_found"}.to_json
+	end
+end
+
+options "/oyunlar/skor/:id" do |env|
+end
+
+post "/oyunlar/skor/:id" do |env|
+	id = env.params.url["id"].to_i64
+	skor1 = env.params.json["skor1"].as(String)
+	skor2 = env.params.json["skor2"].as(String)
+	skor3 = env.params.json["skor3"].as(String)
+	skor4 = env.params.json["skor4"].as(String)
+
+	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
+
+	if oyun
+		el = El.new
+		el.skor1 = skor1
+		el.skor2 = skor2
+		el.skor3 = skor3
+		el.skor4 = skor4
+		el.oyun = oyun
+
+		if el.save
+			oyun.to_json
+		else
+			env.response.status_code = 400
+		end
+	else
+		env.response.status_code = 400
 	end
 end
 
