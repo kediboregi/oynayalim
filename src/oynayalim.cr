@@ -30,6 +30,8 @@ class AuthHandler < Kemal::Handler
 	only ["/oyunlar/:id"], "GET"
 	only ["/oyunlar/:id"], "PUT"
 	only ["/oyunlar/:id"], "DELETE"
+	only ["/oyunlar/skor/:id"], "POST"
+	only ["/oyunlar/skor/:id"], "DELETE"
 
 	def call(env)
 		return call_next(env) unless only_match?(env)
@@ -113,7 +115,7 @@ post "/oyunlar" do |env|
 	oyun.user_uuid = env.get("uuid").as(String).not_nil!
 
 	if oyun.save
-		oyun.to_json
+		{"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "created_at" => oyun.created_at, "eller" => oyun.eller}.to_json
 	else
 		env.response.status_code = 400
 	end
@@ -130,7 +132,7 @@ get "/oyunlar/:id" do |env|
 	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
 
 	if oyun
-		{"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "eller" => oyun.eller}.to_json
+		{"id" => oyun.id, "ad" => oyun.ad, "bitti" => oyun.bitti, "user_uuid" => oyun.user_uuid, "created_at" => oyun.created_at, "eller" => oyun.eller}.to_json
 	else
 		{"status" => "error", "message" => "not_found"}.to_json
 	end
@@ -191,7 +193,7 @@ post "/oyunlar/skor/:id" do |env|
 		el.oyun = oyun
 
 		if el.save
-			oyun.to_json
+			el.to_json
 		else
 			env.response.status_code = 400
 		end
@@ -200,5 +202,22 @@ post "/oyunlar/skor/:id" do |env|
 	end
 end
 
-#Kemal.run(ENV["PORT"].to_i32.not_nil!)
-Kemal.run(8081)
+delete "/oyunlar/skor/:id" do |env|
+	id = env.params.url["id"].to_i64
+
+	skor = El.find_by(id: id)
+
+	if skor && skor.oyun.user_uuid == env.get("uuid")
+		oid = skor.id
+		if skor.destroy
+			{"id" => oid, "status" => "success", "message" => "deleted"}.to_json
+		else
+			{"status" => "error", "message" => "not_deleted"}.to_json
+		end
+	else
+		{"status" => "error", "message" => "not_found"}.to_json
+	end
+end
+
+Kemal.run(ENV["PORT"].to_i32.not_nil!)
+#Kemal.run(8081)
