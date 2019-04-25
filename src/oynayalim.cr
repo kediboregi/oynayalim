@@ -3,9 +3,9 @@ require "json"
 require "uuid"
 
 #if ENV["JAWSDB_URL"]
-	dburl = ENV["JAWSDB_URL"].not_nil!
+	#dburl = ENV["JAWSDB_URL"].not_nil!
 #else
-	#dburl = "mysql://oynayalim:194575322@localhost:3306/oynayalim"
+	dburl = "mysql://oynayalim:194575322@localhost:3306/oynayalim"
 #end
 
 Granite::Adapters << Granite::Adapter::Mysql.new({name: "mysql", url: dburl.not_nil!})
