@@ -239,7 +239,10 @@ post "/oyun/skor" do |env|
 	end
 end
 
-delete "/oyun/skor" do |env|
+options "/oyun/skor/:id/" do |env|
+end
+
+delete "/oyun/skor/:id/" do |env|
 	id = env.params.url["id"].to_i64
 
 	skor = Skor.find_by(id: id)
