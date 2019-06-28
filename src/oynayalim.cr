@@ -100,8 +100,7 @@ get "/oyunlar" do |env|
 		if oyunlar
 			oyunlar.to_json
 		else
-			[].to_json
-			#{"status" => "error", "message" => "not_found"}.to_json
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_logged"}.to_json
