@@ -33,7 +33,7 @@ class AuthHandler < Kemal::Handler
 	only ["/oyun/oyuncu"], "POST"
 	only ["/oyun/oyuncu/:id/"], "DELETE"
 	only ["/oyun/skor"], "POST"
-	only ["/oyun/skor"], "DELETE"
+	only ["/oyun/skor/:id/"], "DELETE"
 
 	def call(env)
 		#pp env
