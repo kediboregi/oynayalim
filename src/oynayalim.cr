@@ -240,7 +240,7 @@ post "/oyun/skor" do |env|
 end
 
 delete "/oyun/skor" do |env|
-	id = env.params.json["id"].as(Int64)
+	id = env.params.url["id"].to_i64
 
 	skor = Skor.find_by(id: id)
 
