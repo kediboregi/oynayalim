@@ -49,6 +49,10 @@ class Skor < Granite::Base
 	belongs_to oyuncu : Oyuncu
 end
 
+Oyun.migrator.drop_and_create
+Oyuncu.migrator.drop_and_create
+Skor.migrator.drop_and_create
+
 #Oyun.migrator.create
 #Oyuncu.migrator.create
 #Skor.migrator.create
