@@ -15,9 +15,10 @@ dependencies:
     github: amberframework/granite
   mysql:
     github: crystal-lang/crystal-mysql
+  CrSerializer:
+    github: Blacksmoke16/CrSerializer
 
 
-
-crystal: 0.27.2
+crystal: 0.29.0
 
 license: MIT

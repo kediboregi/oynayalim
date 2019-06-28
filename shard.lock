@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  CrSerializer:
+    github: Blacksmoke16/CrSerializer
+    version: 0.8.0
+
   db:
     github: crystal-lang/crystal-db
     version: 0.5.1
@@ -10,11 +14,11 @@ shards:
 
   granite:
     github: amberframework/granite
-    version: 0.15.2
+    version: 0.16.0
 
   kemal:
     github: kemalcr/kemal
-    version: 0.25.2
+    commit: e3544a86bf002f75d2b341c5343e9ebdbf839f80
 
   kilt:
     github: jeromegn/kilt
@@ -22,7 +26,7 @@ shards:
 
   mysql:
     github: crystal-lang/crystal-mysql
-    version: 0.5.1
+    version: 0.6.0
 
   radix:
     github: luislavena/radix
