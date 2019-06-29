@@ -26,7 +26,7 @@ end
 
 class AuthHandler < Kemal::Handler
 	only ["/oyunlar"], "GET"
-	#only ["/oyun/:id/"], "GET"
+	only ["/oyun/:id/"], "GET"
 	only ["/oyun"], "POST"
 	only ["/oyun"], "PUT"
 	only ["/oyun/:id/"], "DELETE"
@@ -56,7 +56,8 @@ class AuthHandler < Kemal::Handler
 			call_next(env)
 		else
 			env.set "logged", false
-			{"status" => "error", "message" => "not_logged"}.to_json
+			call_next(env)
+			#{"status" => "error", "message" => "not_logged"}.to_json
 		end
 	end
 
@@ -112,10 +113,11 @@ end
 
 get "/oyun/:id/" do |env|
 	id = env.params.url["id"].to_i64
-	uuid = env.get("uuid")
 
-	if uuid
-		oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
+	if env.get("logged")
+		uuid = env.get("uuid").as(String).not_nil!
+
+		oyun = Oyun.find_by(id: id, user_uuid: uuid)
 	else
 		oyun = Oyun.find_by(id: id)
 	end
@@ -131,50 +133,63 @@ options "/oyun" do |env|
 end
 
 post "/oyun" do |env|
-	ad = env.params.json["ad"].as(String)
+	if env.get("logged")
+		ad = env.params.json["ad"].as(String)
 
-	oyun = Oyun.new
-	oyun.ad = ad
-	oyun.bitti = false
-	oyun.user_uuid = env.get("uuid").as(String).not_nil!
+		oyun = Oyun.new
+		oyun.ad = ad
+		oyun.bitti = false
+		oyun.user_uuid = env.get("uuid").as(String).not_nil!
 
-	if oyun.save
-		oyun.to_json
+		if oyun.save
+			oyun.to_json
+		else
+			env.response.status_code = 400
+		end
 	else
-		env.response.status_code = 400
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
 put "/oyun" do |env|
-	id = env.params.url["id"].to_i64
-	ad = env.params.json["ad"].as(String)
+	if env.get("logged")
+		id = env.params.url["id"].to_i64
+		ad = env.params.json["ad"].as(String)
 
-	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
+		oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
 
-	if oyun
-		oyun.ad = ad
-		if oyun.save
-			oyun.to_json
-		else
-			env.response.status_code = 401
+		if oyun
+			oyun.ad = ad
+			if oyun.save
+				oyun.to_json
+			else
+				env.response.status_code = 401
+			end
 		end
+	else
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
 delete "/oyun/:id/" do |env|
-	id = env.params.url["id"].to_i64
+	if env.get("logged")
+		id = env.params.url["id"].to_i64
 
-	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
+		oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid"))
 
-	if oyun
-		oid = oyun.id
-		if oyun.destroy
-			{"id" => oid, "status" => "success", "message" => "deleted"}.to_json
+		if oyun
+			oid = oyun.id
+			if oyun.destroy
+				{"id" => oid, "status" => "success", "message" => "deleted"}.to_json
+			else
+				{"status" => "error", "message" => "not_deleted"}.to_json
+			end
 		else
-			{"status" => "error", "message" => "not_deleted"}.to_json
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
+
 	else
-		{"status" => "error", "message" => "not_found"}.to_json
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
@@ -182,56 +197,19 @@ options "/oyun/oyuncu" do |env|
 end
 
 post "/oyun/oyuncu" do |env|
-	oyunid = env.params.json["oyun_id"].as(Int64)
-	ad = env.params.json["ad"].as(String)
+	if env.get("logged")
+		oyunid = env.params.json["oyun_id"].as(Int64)
+		ad = env.params.json["ad"].as(String)
 
-	oyun = Oyun.find_by(id: oyunid, user_uuid: env.get("uuid"))
+		oyun = Oyun.find_by(id: oyunid, user_uuid: env.get("uuid"))
 
-	if oyun
-		oyuncu = Oyuncu.new
-		oyuncu.ad = ad
-		oyuncu.oyun = oyun
+		if oyun
+			oyuncu = Oyuncu.new
+			oyuncu.ad = ad
+			oyuncu.oyun = oyun
 
-		if oyuncu.save
-			oyuncu.to_json
-		else
-			env.response.status_code = 400
-		end
-	else
-		env.response.status_code = 400
-	end
-end
-
-options "/oyun/skor" do |env|
-end
-
-post "/oyun/skor" do |env|
-	oyunid = env.params.json["oyun_id"].as(Int64)
-	oyuncuid = env.params.json["oyuncu_id"].as(Int64)
-	#sira = env.params.json["sira"].as(Int64)
-	sira : Int64 = 0
-	deger = env.params.json["deger"].as(Int64)
-
-	oyun = Oyun.find_by(id: oyunid, user_uuid: env.get("uuid"))
-
-	if oyun
-
-		oyuncu = Oyuncu.find_by(oyun_id: oyun.id, id: oyuncuid)
-
-		if oyuncu
-			sonsira = Skor.first("WHERE oyuncu_id = ? ORDER BY sira DESC", [oyuncu.id])
-
-			if sonsira
-				sira = sonsira.sira.not_nil! + 1
-			end
-
-			skor = Skor.new
-			skor.sira = sira
-			skor.deger = deger
-			skor.oyuncu = oyuncu
-
-			if skor.save
-				skor.to_json
+			if oyuncu.save
+				oyuncu.to_json
 			else
 				env.response.status_code = 400
 			end
@@ -239,7 +217,52 @@ post "/oyun/skor" do |env|
 			env.response.status_code = 400
 		end
 	else
-		env.response.status_code = 400
+		{"status" => "error", "message" => "not_logged"}.to_json
+	end
+end
+
+options "/oyun/skor" do |env|
+end
+
+post "/oyun/skor" do |env|
+	if env.get("logged")
+		oyunid = env.params.json["oyun_id"].as(Int64)
+		oyuncuid = env.params.json["oyuncu_id"].as(Int64)
+		#sira = env.params.json["sira"].as(Int64)
+		sira : Int64 = 0
+		deger = env.params.json["deger"].as(Int64)
+
+		oyun = Oyun.find_by(id: oyunid, user_uuid: env.get("uuid"))
+
+		if oyun
+
+			oyuncu = Oyuncu.find_by(oyun_id: oyun.id, id: oyuncuid)
+
+			if oyuncu
+				sonsira = Skor.first("WHERE oyuncu_id = ? ORDER BY sira DESC", [oyuncu.id])
+
+				if sonsira
+					sira = sonsira.sira.not_nil! + 1
+				end
+
+				skor = Skor.new
+				skor.sira = sira
+				skor.deger = deger
+				skor.oyuncu = oyuncu
+
+				if skor.save
+					skor.to_json
+				else
+					env.response.status_code = 400
+				end
+			else
+				env.response.status_code = 400
+			end
+		else
+			env.response.status_code = 400
+		end
+	else
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
@@ -247,18 +270,22 @@ options "/oyun/skor/:id/" do |env|
 end
 
 delete "/oyun/skor/:id/" do |env|
-	id = env.params.url["id"].to_i64
+	if env.get("logged")
+		id = env.params.url["id"].to_i64
 
-	skor = Skor.find_by(id: id)
+		skor = Skor.find_by(id: id)
 
-	if skor && skor.oyuncu.oyun.user_uuid == env.get("uuid")
-		if skor.destroy
-			{"id" => skor.id, "status" => "success", "message" => "deleted"}.to_json
+		if skor && skor.oyuncu.oyun.user_uuid == env.get("uuid")
+			if skor.destroy
+				{"id" => skor.id, "status" => "success", "message" => "deleted"}.to_json
+			else
+				{"status" => "error", "message" => "not_deleted"}.to_json
+			end
 		else
-			{"status" => "error", "message" => "not_deleted"}.to_json
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
 	else
-		{"status" => "error", "message" => "not_found"}.to_json
+		{"status" => "error", "message" => "not_logged"}.to_json
 	end
 end
 
