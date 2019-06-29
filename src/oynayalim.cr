@@ -117,7 +117,8 @@ get "/oyun/:id/" do |env|
 	if env.get("logged")
 		uuid = env.get("uuid").as(String).not_nil!
 
-		oyun = Oyun.find_by(id: id, user_uuid: uuid)
+		oyun = Oyun.find_by(id: id)
+		#oyun = Oyun.find_by(id: id, user_uuid: uuid)
 	else
 		oyun = Oyun.find_by(id: id)
 	end
