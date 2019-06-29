@@ -26,7 +26,7 @@ end
 
 class AuthHandler < Kemal::Handler
 	only ["/oyunlar"], "GET"
-	only ["/oyun/:id/"], "GET"
+	#only ["/oyun/:id/"], "GET"
 	only ["/oyun"], "POST"
 	only ["/oyun"], "PUT"
 	only ["/oyun/:id/"], "DELETE"
@@ -114,7 +114,11 @@ get "/oyun/:id/" do |env|
 	id = env.params.url["id"].to_i64
 	uuid = env.get("uuid")
 
-	oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
+	if uuid
+		oyun = Oyun.find_by(id: id, user_uuid: env.get("uuid").as(String).not_nil!)
+	else
+		oyun = Oyun.find_by(id: id)
+	end
 
 	if oyun
 		oyun.to_json
