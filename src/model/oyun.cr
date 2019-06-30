@@ -53,6 +53,6 @@ end
 #Oyuncu.migrator.drop_and_create
 #Skor.migrator.drop_and_create
 
-#Oyun.migrator.create
-#Oyuncu.migrator.create
-#Skor.migrator.create
+Oyun.migrator.create
+Oyuncu.migrator.create
+Skor.migrator.create

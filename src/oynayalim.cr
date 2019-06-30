@@ -39,10 +39,6 @@ class AuthHandler < Kemal::Handler
 		#pp env
 		return call_next(env) unless only_match?(env)
 
-		if only_match?(env)
-			puts "ccc"
-		end
-
 		id = env.request.headers["accessToken"]?
 		begin
 			uuid = UUID.new(id.not_nil!).v4?
@@ -80,11 +76,11 @@ add_handler AuthHandler.new
 
 get "/" do |env|
 	#env.redirect "index.html"
+	{"cCc" => "666"}.to_json
 end
 
 get "/login" do |env|
 	id = UUID.random.to_s
-	puts id
 	env.response.headers["accessToken"] = id
 	{"accessToken" => id}.to_json
 end
@@ -145,7 +141,7 @@ post "/oyun" do |env|
 		if oyun.save
 			oyun.to_json
 		else
-			env.response.status_code = 400
+			{"status" => "error", "message" => "not_saved"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_logged"}.to_json
@@ -164,8 +160,10 @@ put "/oyun" do |env|
 			if oyun.save
 				oyun.to_json
 			else
-				env.response.status_code = 401
+				{"status" => "error", "message" => "not_saved"}.to_json
 			end
+		else
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_logged"}.to_json
@@ -212,10 +210,10 @@ post "/oyun/oyuncu" do |env|
 			if oyuncu.save
 				oyuncu.to_json
 			else
-				env.response.status_code = 400
+				{"status" => "error", "message" => "not_saved"}.to_json
 			end
 		else
-			env.response.status_code = 400
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_logged"}.to_json
@@ -254,13 +252,13 @@ post "/oyun/skor" do |env|
 				if skor.save
 					skor.to_json
 				else
-					env.response.status_code = 400
+					{"status" => "error", "message" => "not_saved"}.to_json
 				end
 			else
-				env.response.status_code = 400
+				{"status" => "error", "message" => "not_found"}.to_json
 			end
 		else
-			env.response.status_code = 400
+			{"status" => "error", "message" => "not_found"}.to_json
 		end
 	else
 		{"status" => "error", "message" => "not_logged"}.to_json
