@@ -53,6 +53,10 @@ end
 #Oyuncu.migrator.drop_and_create
 #Skor.migrator.drop_and_create
 
-Oyun.migrator.create
-Oyuncu.migrator.create
-Skor.migrator.create
+begin
+	Oyun.migrator.create
+	Oyuncu.migrator.create
+	Skor.migrator.create
+rescue
+
+end
